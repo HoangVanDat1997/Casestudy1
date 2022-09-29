@@ -80,3 +80,8 @@ footer{
 table{
     background: darkseagreen;
 }
+footer{
+    margin: 0;
+    background: darkseagreen;
+    border: darkseagreen;
+}

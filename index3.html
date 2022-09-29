@@ -205,7 +205,7 @@ if (addnew.name=="" ||
     setTimeout(alert("Vui Lòng Điền Đầy Đủ Thông Tin Trước Khi Add"),2000) ;
 } else {
     addnew.getImportprice();
-    addnew.inventory() ;
+    addnew.inVentory() ;
     listdog.push(addnew) ;
     displayDog(listdog);
     document.getElementById("name").value=="";
@@ -241,8 +241,103 @@ localStorage.setItem('data2' ,JSON.stringify(listdog)) ;
         }
         localStorage.setItem('data2' , JSON.stringify(listdog));
     }
-    function Edit(i){
+    function Edit(i) {
+        let editfile = "<table>" +
+            "<tr>" +
+            "<th colspan='4' style='background-color: darkslateblue;height: 20px'>Edit Form</th>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='background-color: orange;height: 20px'>Dicreption</th>" +
+            "<th style='background-color: orange;height: 20px'>Dogname</th>" +
+            "<th style='background-color: orange;height: 20px'>Importprice</th>" +
+            "<th style='background-color: orange;height: 20px'>Quantity</th>" +
+            "</tr>" +
+            "<tr>" +
+            "<td><input id='elink' style='width: 136px;height: 30px ;text-align: center' value=" + listproducts[i].link + "></td>" +
+            "<td><input id='emobie' style='width: 136px;height: 30px ;text-align: center' value=" + listproducts[i].name + "></td>" +
+            "<td><input id='eprice' style='width: 136px;height: 30px ;text-align: center' value=" + listproducts[i].importprice + "></td>" +
+            "<td><input id='equantity' style='width: 136px;height: 30px ;text-align: center'  value=" + listproducts[i].quantity + "></td>" +
+            "</tr>" +
+            "</table>" +
+            "<button class='edit' onclick='saveEdit(" + i + ");' style='position: relative; left: 524px;width: 100px' >SaveEdit</button>";
+        document.getElementById("edit").innerHTML = editfile;
+    }
 
+    function saveEdit(i) {
+        listproducts[i].link = document.getElementById("elink").value;
+        listproducts[i].mobie = document.getElementById("emobie").value;
+        listproducts[i].importprice = document.getElementById("eprice").value;
+        listproducts[i].quantity = document.getElementById("equantity").value;
+        listproducts[i].price = listproducts[i].importprice * 120 / 100;
+        listproducts[i].inventory = listproducts[i].quantity - listproducts[i].sale;
+        displayProduct(listproducts);
+        document.getElementById("edit").innerHTML = "";
+        localStorage.setItem('data2',JSON.stringify(listproducts));
+    }
+
+    function Search() {
+        let c = document.getElementById("keyword").value;
+        if (c == "") {
+            setTimeout(alert("Bạn hãy điền đầy đủ thông tin tìm kiếm"), 2000);
+        } else {
+            let index = -1;
+            for (let i = 0; i < listproducts.length; i++) {
+                if (c == listproducts[i].name) {
+                    indexAdmin = i;
+                    break;
+                }
+            }
+            if (indexAdmin !=-1){
+                let body =
+                    "<tr>" +
+                    "<th>" + (indexAdmin + 1) + "</th>" +
+                    "<td><img src=" + listproducts[indexAdmin].link + " width='60' height='60'></td>" +
+                    "<td>" + listproducts[indexAdmin].name + "</td>" +
+                    "<td>" + listproducts[indexAdmin].quantity + "</td>" +
+                    "<td>" + listproducts[indexAdmin].importprice + "</td>" +
+                    "<td>" + listproducts[indexAdmin].price + "</td>" +
+                    "<td><button onclick='sale(" + indexAdmin + ");'>Sale</button></td>" +
+                    "<td>" + listproducts[indexAdmin].inventory + "</td>" +
+                    "<td><button class='edit' onclick='Edit(" + indexAdmin + ");'>Edit</button></td>" +
+                    "<td><button class='delete' onclick='Delete(" + indexAdmin + ");'>Delete</button></td>" +
+                    "</tr>";
+                document.getElementById("body").innerHTML = body;
+            }else{
+                alert("Không tìm thấy");
+            }
+        }
+    }
+
+    function Report(){
+        let totalSale=0;
+        let totalInventory=0;
+        let totalRevenue=0;
+        let totalProfit=0;
+        for (let i = 0; i < listproducts.length; i++) {
+            totalSale+=+listproducts[i].sale;
+            totalInventory+=+listproducts[i].inventory;
+            totalRevenue+=+listproducts[i].sale*listproducts[i].price;
+            totalProfit+=+listproducts[i].sale*(+listproducts[i].price-+listproducts[i].importprice);
+        }
+        let body =
+            "<table>"+
+            "<tr>" +
+            "<th colspan='4'style='background-color: darkslateblue;height: 20px'>Reports</th>" +
+            "</tr>"+
+            "<tr>" +
+            "<th style='background-color: darkslateblue;height: 20px'>TotalSale</th>" +
+            "<th style='background-color: darkslateblue;height: 20px'>TotalInventory</th>" +
+            "<th style='background-color: darkslateblue;height: 20px'>TotalRevenue ($)</th>" +
+            "<th style='background-color: darkslateblue;height: 20px'>TotalProfit ($)</th>" +
+            "</tr>"+
+            "<tr>" +
+            "<td height='50px'>" + totalSale + "</td>" +
+            "<td height='50px'>" + totalInventory + "</td>" +
+            "<td height='50px'>" + totalRevenue + "</td>" +
+            "<td height='50px'>" + totalProfit + "</td>"+
+            "</tr>"+
+            "</table>";
+        document.getElementById("edit").innerHTML = body;
     }
 </script>
 </body>
