@@ -2,10 +2,248 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-  <script src="bangia.js"></script>
-</head>
-<body>
+    <title>Quan ly kho</title>
+    <link rel="stylesheet" href="index3.css">
+    <style>
+        th{
+            background: blanchedalmond;
+            height: 50px;width: 128px;
+        }
+        td {
+            text-align: center;border: 1px;
+            border-style: solid; width: 150px;
+            border-color: green;
+        }
 
+        tr {
+            text-align: center;
+        }
+        input{
+            border-style: none;
+        }
+        fieldset{
+            background-color: lightcyan;
+        }
+        legend{
+            color: cadetblue;
+        }
+        button{
+            width: 100px; background-color: cadetblue; height: 30px; color: lightcyan;
+        }
+        .edit{
+            background-color: orange;
+        }
+        .delete{
+            background-color: red;
+        }
+    </style>
+
+</head>
+<header>
+    <h3> Quản Lý Dog Family </h3>
+    <img SRC="img/logo4.jpg">
+</header>
+<body onload="khaibao">
+<h1>TEXT</h1>
+<form action="">
+    <fieldset style="width: 300px;">
+        <legend >Creat a new product</legend>
+        <table>
+            <tr>
+                <td>
+                    Cún Name
+                </td>
+                <td>
+                    <input type="text" id="name">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Đặc Điểm
+                </td>
+                <td>
+                    <input type="text" id="link">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Số lượng
+                </td>
+                <td>
+                    <input type="text" id="quantity">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Giá Cún
+                </td>
+                <td>
+                    <input type="text" id="price">
+                </td>
+            </tr>
+        </table>
+        <button onclick="Add();" style="left: 198px;position: relative" type="button">Addnew</button>
+    </fieldset>
+</form>
+<form action="">
+    <fieldset style="width: 300px;">
+        <legend>Search</legend>
+        <table>
+            <tr>
+                <td>
+                    Cún Name
+                </td>
+                <td>
+                    <input type="text" id="keyword">
+                </td>
+            </tr>
+        </table>
+        <button onclick="Search();" style="left: 198px;position: relative" type="button">Search</button>
+    </fieldset>
+</form>
+<br>
+<button onclick="displayProduct(listproducts);" style="left: 2px;position: relative">Kho Hàng</button>
+<button onclick="Report();" style="left: 2px;position: relative">Báo Cáo</button>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            STT
+        </th>
+        <th>
+            Đặc Điểm
+        </th>
+        <th>
+            Cún Name
+        </th>
+        <th>
+            Số Lượng
+        </th>
+        <th>
+            Giá Cún
+        </th>
+        <th>
+            Price ($)
+        </th>
+        <th>
+            Sale
+        </th>
+        <th>
+            Inventory
+        </th>
+        <th>
+            Edit
+        </th>
+        <th>
+            Delete
+        </th>
+    </tr>
+    <tbody id="body">
+
+    </tbody>
+</table>
+<br>
+<div id="edit" class="report" style="position: relative; left: 350px"></div>
+<script>
+    class Dog {
+        constructor(name , importprice , quantity , link) {
+            this.name = name;
+            this.importprice = importprice;
+            // quantity ( số lượng )
+            this.quantity = quantity
+            this.link = link;
+            this.sale = 0 ;
+            // inventory (hàng tồn kho)
+            this.inventory = this.quantity - this.sale;
+            this.oder = 0 ;
+            this.price = this.importprice * 120 / 100
+        }
+        getImportprice() {
+            return this.price = this.importprice * 120 / 100
+        }
+        inVentory () {
+            return this.inventory = this.quantity - this.sale;
+        }
+    }
+    let listdog=[]
+    function khaibao(){
+        if (localStorage.getItem('data2')==null){
+            let Bull= new Dog("Bull",1550,30, "dog.jpg" );
+            listdog.push("Bull");
+        } else {
+            listdog = JSON.parse(localStorage.getItem('data2'));
+        } console.log(listdog)
+    }
+function displayDog(arr) {
+    let body = "";
+    for (let i = 0; i < arr.length; i++) {
+        body +=
+            "<tr>" +
+            "<th>" + (i + 1) + "</th>" +
+            "<td><img src=" + arr[i].link + " width='60' height='60'></td>" +
+            "<td>" + arr[i].name + "</td>" +
+            "<td>" + arr[i].quantity + "</td>" +
+            "<td>" + arr[i].importprice + "</td>" +
+            "<td>" + arr[i].price + "</td>" +
+            "<td><button onclick='sale(" + i + ");'>Sale</button></td>" +
+            "<td>" + arr[i].inventory + "</td>" +
+            "<td><button class='edit' onclick='Edit(" + i + ");'>Edit</button></td>" +
+            "<td><button class='delete' onclick='Delete(" + i + ");'>Delete</button></td>" +
+            "</tr>";
+    }
+    document.getElementById("body").innerHTML = body;
+}
+function Add(){
+        let addnew = new Dog();
+        addnew.name = document.getElementById("name").value;
+        addnew.importprice = document.getElementById("price").value;
+        addnew.quantity = document.getElementById("quantity").value;
+        addnew.link = document.getElementById("link").value;
+if (addnew.name=="" ||
+    addnew.quantity == "" ||
+    addnew.importprice == "" ||
+    addnew.link == "") {
+    setTimeout(alert("Vui Lòng Điền Đầy Đủ Thông Tin Trước Khi Add"),2000) ;
+} else {
+    addnew.getImportprice();
+    addnew.inventory() ;
+    listdog.push(addnew) ;
+    displayDog(listdog);
+    document.getElementById("name").value=="";
+    document.getElementById("quantity").value=="";
+    document.getElementById("price").value=="";
+    document.getElementById("link")=="";
+}
+localStorage.setItem('data2' ,JSON.stringify(listdog)) ;
+    }
+    function sale(i){
+        let a = +prompt("Nhập Số Lượng Cần Bán");
+        while (isNaN(a)){
+            a = +prompt("Nhập Số Lượng Cần Bán")
+        }
+        let b = listdog[i].sale + a ;
+        if (b > listdog[i].quantity){
+            setTimeout(alert("Quá Số Lượng Tồn Kho , Nhập Lại") , 2000)
+        }else {
+            listdog[i].sale +=a;
+            listdog[i].inventory = listdog[i].quantity - listdog[i].sale;
+            displayDog(listdog)
+        }
+        localStorage.setItem('data2',JSON.stringify(listdog));
+    }
+    function Delete(i) {
+        let a = confirm("Bạn Chắc Chắn Muốn Xoá?");
+        if (a){
+            for(let j = 0 ; j < listdog.length - 1 ; j++){
+                listdog[j] += 1
+            }
+            listdog.length = listdog.length - 1;
+            displayDog(listdog);
+        }
+        localStorage.setItem('data2' , JSON.stringify(listdog));
+    }
+    function Edit(i){
+
+    }
+</script>
 </body>
 </html>

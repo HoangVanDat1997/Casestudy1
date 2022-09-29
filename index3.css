@@ -1,0 +1,15 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: Roboto, sans-serif;
+}
+header {
+    background: antiquewhite;
+}
+header img{
+    text-align: center;
+    margin-left: 60px;
+}
+h3{
+    margin-left: 500px;
+}
