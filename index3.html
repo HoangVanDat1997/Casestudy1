@@ -5,35 +5,48 @@
     <title>Quan ly kho</title>
     <link rel="stylesheet" href="index3.css">
     <style>
-        th{
+        th {
             background: blanchedalmond;
-            height: 50px;width: 128px;
+            height: 50px;
+            width: 128px;
         }
+
         td {
-            text-align: center;border: 1px;
-            border-style: solid; width: 150px;
+            text-align: center;
+            border: 1px;
+            border-style: solid;
+            width: 150px;
             border-color: green;
         }
 
         tr {
             text-align: center;
         }
-        input{
+
+        input {
             border-style: none;
         }
-        fieldset{
+
+        fieldset {
             background-color: lightcyan;
         }
-        legend{
+
+        legend {
             color: cadetblue;
         }
-        button{
-            width: 100px; background-color: cadetblue; height: 30px; color: lightcyan;
+
+        button {
+            width: 100px;
+            background-color: cadetblue;
+            height: 30px;
+            color: lightcyan;
         }
-        .edit{
+
+        .edit {
             background-color: orange;
         }
-        .delete{
+
+        .delete {
             background-color: red;
         }
     </style>
@@ -47,7 +60,7 @@
 <h1>TEXT</h1>
 <form action="">
     <fieldset style="width: 300px;">
-        <legend >Creat a new product</legend>
+        <legend>Creat a new product</legend>
         <table>
             <tr>
                 <td>
@@ -97,13 +110,13 @@
             Đặc Điểm
         </th>
         <th>
-            Cún Name
+            Name
         </th>
         <th>
             Số Lượng
         </th>
         <th>
-            Giá Cún
+            Giá
         </th>
         <th>
             Price ($)
@@ -129,200 +142,112 @@
 <div id="edit" class="report" style="position: relative; left: 350px"></div>
 <script>
     class Dog {
-        constructor(name , importprice , quantity , link) {
+        constructor(name, importprice, quantity, link) {
             this.name = name;
             this.importprice = importprice;
             // quantity ( số lượng )
             this.quantity = quantity
             this.link = link;
-            this.sale = 0 ;
+            this.sale = 0;
             // inventory (hàng tồn kho)
             this.inventory = this.quantity - this.sale;
-            this.oder = 0 ;
+            this.oder = 0;
             this.price = this.importprice * 120 / 100
         }
+
         getImportprice() {
             return this.price = this.importprice * 120 / 100
         }
-        inVentory () {
+
+        inVentory() {
             return this.inventory = this.quantity - this.sale;
         }
     }
-    let listdog=[]
-    function khaibao(){
-        if (localStorage.getItem('data2')==null){
-            let Bull= new Dog("Bull",1550,30, "dog.jpg" );
+
+    let listdog = []
+
+    function khaibao() {
+        if (localStorage.getItem('data2') == null) {
+            let Bull = new Dog("Bull", 1550, 30, "dog.jpg");
             listdog.push("Bull");
         } else {
             listdog = JSON.parse(localStorage.getItem('data2'));
-        } console.log(listdog)
+        }
+        console.log(listdog)
     }
-function displayDog(arr) {
-    let body = "";
-    for (let i = 0; i < arr.length; i++) {
-        body +=
-            "<tr>" +
-            "<th>" + (i + 1) + "</th>" +
-            "<td><img src=" + arr[i].link + " width='60' height='60'></td>" +
-            "<td>" + arr[i].name + "</td>" +
-            "<td>" + arr[i].quantity + "</td>" +
-            "<td>" + arr[i].importprice + "</td>" +
-            "<td>" + arr[i].price + "</td>" +
-            "<td><button onclick='sale(" + i + ");'>Sale</button></td>" +
-            "<td>" + arr[i].inventory + "</td>" +
-            "<td><button class='edit' onclick='Edit(" + i + ");'>Edit</button></td>" +
-            "<td><button class='delete' onclick='Delete(" + i + ");'>Delete</button></td>" +
-            "</tr>";
+
+    function displayDog(arr) {
+        let body = "";
+        for (let i = 0; i < arr.length; i++) {
+            body +=
+                "<tr>" +
+                "<th>" + (i + 1) + "</th>" +
+                "<td><img src=" + arr[i].link + " width='60' height='60'></td>" +
+                "<td>" + arr[i].name + "</td>" +
+                "<td>" + arr[i].quantity + "</td>" +
+                "<td>" + arr[i].importprice + "</td>" +
+                "<td>" + arr[i].price + "</td>" +
+                "<td><button onclick='sale(" + i + ");'>Sale</button></td>" +
+                "<td>" + arr[i].inventory + "</td>" +
+                "<td><button class='edit' onclick='Edit(" + i + ");'>Edit</button></td>" +
+                "<td><button class='delete' onclick='Delete(" + i + ");'>Delete</button></td>" +
+                "</tr>";
+        }
+        document.getElementById("body").innerHTML = body;
     }
-    document.getElementById("body").innerHTML = body;
-}
-function Add(){
+
+    function Add() {
         let addnew = new Dog();
         addnew.name = document.getElementById("name").value;
         addnew.importprice = document.getElementById("price").value;
         addnew.quantity = document.getElementById("quantity").value;
-        addnew.link = document.getElementById("link").value;
-if (addnew.name=="" ||
-    addnew.quantity == "" ||
-    addnew.importprice == "" ||
-    addnew.link == "") {
-    setTimeout(alert("Vui Lòng Điền Đầy Đủ Thông Tin Trước Khi Add"),2000) ;
-} else {
-    addnew.getImportprice();
-    addnew.inVentory() ;
-    listdog.push(addnew) ;
-    displayDog(listdog);
-    document.getElementById("name").value=="";
-    document.getElementById("quantity").value=="";
-    document.getElementById("price").value=="";
-    document.getElementById("link")=="";
-}
-localStorage.setItem('data2' ,JSON.stringify(listdog)) ;
+        addnew.link =document.getElementById("link").value;
+        if (addnew.name == "" ||
+            addnew.quantity == "" ||
+            addnew.importprice == "" ||
+            addnew.link == "") {
+            setTimeout(alert("Vui Lòng Điền Đầy Đủ Thông Tin Trước Khi Add"),5);
+        } else {
+            addnew.getImportprice();
+            addnew.inVentory();
+            listdog.push(addnew);
+            displayDog(listdog);
+            document.getElementById("name").value == "";
+            document.getElementById("quantity").value == "";
+            document.getElementById("price").value == "";
+            document.getElementById("link") == "";
+        }
+        localStorage.setItem('data2', JSON.stringify(listdog));
     }
-    function sale(i){
+
+    function sale(i) {
         let a = +prompt("Nhập Số Lượng Cần Bán");
-        while (isNaN(a)){
+        while (isNaN(a)) {
             a = +prompt("Nhập Số Lượng Cần Bán")
         }
-        let b = listdog[i].sale + a ;
-        if (b > listdog[i].quantity){
-            setTimeout(alert("Quá Số Lượng Tồn Kho , Nhập Lại") , 2000)
-        }else {
-            listdog[i].sale +=a;
+        let b = listdog[i].sale + a;
+        if (b > listdog[i].quantity) {
+            setTimeout(alert("Quá Số Lượng Tồn Kho , Nhập Lại"), 2000)
+        } else {
+            listdog[i].sale += a;
             listdog[i].inventory = listdog[i].quantity - listdog[i].sale;
             displayDog(listdog)
         }
-        localStorage.setItem('data2',JSON.stringify(listdog));
+        localStorage.setItem('data2', JSON.stringify(listdog));
     }
+
     function Delete(i) {
         let a = confirm("Bạn Chắc Chắn Muốn Xoá?");
-        if (a){
-            for(let j = 0 ; j < listdog.length - 1 ; j++){
+        if (a) {
+            for (let j = 0; j < listdog.length - 1; j++) {
                 listdog[j] += 1
             }
             listdog.length = listdog.length - 1;
             displayDog(listdog);
         }
-        localStorage.setItem('data2' , JSON.stringify(listdog));
-    }
-    function Edit(i) {
-        let editfile = "<table>" +
-            "<tr>" +
-            "<th colspan='4' style='background-color: darkslateblue;height: 20px'>Edit Form</th>" +
-            "</tr>" +
-            "<tr>" +
-            "<th style='background-color: orange;height: 20px'>Dicreption</th>" +
-            "<th style='background-color: orange;height: 20px'>Dogname</th>" +
-            "<th style='background-color: orange;height: 20px'>Importprice</th>" +
-            "<th style='background-color: orange;height: 20px'>Quantity</th>" +
-            "</tr>" +
-            "<tr>" +
-            "<td><input id='elink' style='width: 136px;height: 30px ;text-align: center' value=" + listproducts[i].link + "></td>" +
-            "<td><input id='emobie' style='width: 136px;height: 30px ;text-align: center' value=" + listproducts[i].name + "></td>" +
-            "<td><input id='eprice' style='width: 136px;height: 30px ;text-align: center' value=" + listproducts[i].importprice + "></td>" +
-            "<td><input id='equantity' style='width: 136px;height: 30px ;text-align: center'  value=" + listproducts[i].quantity + "></td>" +
-            "</tr>" +
-            "</table>" +
-            "<button class='edit' onclick='saveEdit(" + i + ");' style='position: relative; left: 524px;width: 100px' >SaveEdit</button>";
-        document.getElementById("edit").innerHTML = editfile;
+        localStorage.setItem('data2', JSON.stringify(listdog));
     }
 
-    function saveEdit(i) {
-        listproducts[i].link = document.getElementById("elink").value;
-        listproducts[i].mobie = document.getElementById("emobie").value;
-        listproducts[i].importprice = document.getElementById("eprice").value;
-        listproducts[i].quantity = document.getElementById("equantity").value;
-        listproducts[i].price = listproducts[i].importprice * 120 / 100;
-        listproducts[i].inventory = listproducts[i].quantity - listproducts[i].sale;
-        displayProduct(listproducts);
-        document.getElementById("edit").innerHTML = "";
-        localStorage.setItem('data2',JSON.stringify(listproducts));
-    }
-
-    function Search() {
-        let c = document.getElementById("keyword").value;
-        if (c == "") {
-            setTimeout(alert("Bạn hãy điền đầy đủ thông tin tìm kiếm"), 2000);
-        } else {
-            let index = -1;
-            for (let i = 0; i < listproducts.length; i++) {
-                if (c == listproducts[i].name) {
-                    indexAdmin = i;
-                    break;
-                }
-            }
-            if (indexAdmin !=-1){
-                let body =
-                    "<tr>" +
-                    "<th>" + (indexAdmin + 1) + "</th>" +
-                    "<td><img src=" + listproducts[indexAdmin].link + " width='60' height='60'></td>" +
-                    "<td>" + listproducts[indexAdmin].name + "</td>" +
-                    "<td>" + listproducts[indexAdmin].quantity + "</td>" +
-                    "<td>" + listproducts[indexAdmin].importprice + "</td>" +
-                    "<td>" + listproducts[indexAdmin].price + "</td>" +
-                    "<td><button onclick='sale(" + indexAdmin + ");'>Sale</button></td>" +
-                    "<td>" + listproducts[indexAdmin].inventory + "</td>" +
-                    "<td><button class='edit' onclick='Edit(" + indexAdmin + ");'>Edit</button></td>" +
-                    "<td><button class='delete' onclick='Delete(" + indexAdmin + ");'>Delete</button></td>" +
-                    "</tr>";
-                document.getElementById("body").innerHTML = body;
-            }else{
-                alert("Không tìm thấy");
-            }
-        }
-    }
-
-    function Report(){
-        let totalSale=0;
-        let totalInventory=0;
-        let totalRevenue=0;
-        let totalProfit=0;
-        for (let i = 0; i < listproducts.length; i++) {
-            totalSale+=+listproducts[i].sale;
-            totalInventory+=+listproducts[i].inventory;
-            totalRevenue+=+listproducts[i].sale*listproducts[i].price;
-            totalProfit+=+listproducts[i].sale*(+listproducts[i].price-+listproducts[i].importprice);
-        }
-        let body =
-            "<table>"+
-            "<tr>" +
-            "<th colspan='4'style='background-color: darkslateblue;height: 20px'>Reports</th>" +
-            "</tr>"+
-            "<tr>" +
-            "<th style='background-color: darkslateblue;height: 20px'>TotalSale</th>" +
-            "<th style='background-color: darkslateblue;height: 20px'>TotalInventory</th>" +
-            "<th style='background-color: darkslateblue;height: 20px'>TotalRevenue ($)</th>" +
-            "<th style='background-color: darkslateblue;height: 20px'>TotalProfit ($)</th>" +
-            "</tr>"+
-            "<tr>" +
-            "<td height='50px'>" + totalSale + "</td>" +
-            "<td height='50px'>" + totalInventory + "</td>" +
-            "<td height='50px'>" + totalRevenue + "</td>" +
-            "<td height='50px'>" + totalProfit + "</td>"+
-            "</tr>"+
-            "</table>";
-        document.getElementById("edit").innerHTML = body;
-    }
 </script>
 </body>
 </html>
